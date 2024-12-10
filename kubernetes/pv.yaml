@@ -1,0 +1,20 @@
+#  Create a persistant volume.  This maps a local directory on thr host to a persistent volume
+# that can be referenced by a Persistant Volume Claim, vi the deployments
+# this PV is named  local-pv   and links to /tmp/pizza-app
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  hostPath:
+    path: /tmp/pizza-app # This is the path on your host machine
+    type: Directory

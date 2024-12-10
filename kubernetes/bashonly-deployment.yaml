@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bashonly
+  labels:
+    app: bashonly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bashonly
+  template:
+    metadata:
+      labels:
+        app: bashonly
+    spec:
+      containers:
+      - name: bashonly
+        image: bashonly:latest  # Replace with your built image
+        imagePullPolicy: IfNotPresent  # NEEDED SO KUBENETES WILL USE THE LOCAL IMAGE 
+        stdin: true
+        tty: true
+        env:
+        - name: DB_HOST
+          value: "postgres-service"  # Name of the PostgreSQL service
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: "testdb"
+        - name: DB_USER
+          value: "testuser"
+        - name: DB_PASSWORD
+          value: "testpassword"
+        volumeMounts:
+        - mountPath: /app         # this is where the PVC wull be mounted inside this pod
+          name: local-dev-volume
+      volumes:
+      - name: local-dev-volume
+        persistentVolumeClaim:
+          claimName: local-pvc         

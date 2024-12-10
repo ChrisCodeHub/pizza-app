@@ -1,0 +1,9 @@
+# this file allows docker to map a directory from inside Docker to the host systems
+# this "directory running inside docker" then maps to a PV, and a PVC inside the KIND cluster
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: /tmp/pizza-app
+        containerPath: /tmp/pizza-app

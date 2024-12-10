@@ -1,0 +1,14 @@
+# this then makes a "claim" against the persistant volume in pv.yaml
+# teh linkage is through the "storageClassName" entry which is the same on both
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+  namespace: pizza-app
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: manual
